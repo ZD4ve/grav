@@ -22,13 +22,12 @@ public class Vec2 implements Serializable{
         return new Vec2(this.x * scalar, this.y * scalar);
     }
     public Vec2 normalise() {
-        double amplitude = getAmplitude();
-        return new Vec2(this.x / amplitude, this.y / amplitude);
+        return new Vec2(this.x / amplitude(), this.y / amplitude());
     }
-    public double getAmplitude() {
+    public double amplitude() {
         return Math.hypot(x, y);
     }
-    public double getAngle() {
+    public double angle() {
         return Math.toDegrees(Math.atan2(y, x));
     }
 

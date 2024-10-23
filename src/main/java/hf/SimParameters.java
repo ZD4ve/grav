@@ -10,6 +10,9 @@ public class SimParameters implements Serializable {
     public synchronized Vec2 getVector(int index) {
         return vectors.get(index);
     }
+    public synchronized void setVector(int index, Vec2 v) {
+        vectors.set(index, v);
+    }
     public SimParameters(){
         vectors.add(new Vec2(5,13));
         vectors.add(new Vec2(8,-63));
