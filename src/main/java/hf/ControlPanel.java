@@ -13,13 +13,16 @@ import javax.swing.JPanel;
 public class ControlPanel extends JPanel {
 
     public ControlPanel(SimParameters simParams) {
+        super();
         setPreferredSize(new Dimension(400, 600));
         setLayout(new BorderLayout(20,20));
+        setOpaque(false);
 
         //Buttons
         JPanel buttonPanel = new JPanel();
         add(buttonPanel, BorderLayout.SOUTH);
-
+        
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets.set(5, 5, 5, 5);
@@ -36,6 +39,7 @@ public class ControlPanel extends JPanel {
         JPanel inputPanel = new JPanel();
         add(inputPanel, BorderLayout.CENTER);
 
+        inputPanel.setOpaque(false);
         inputPanel.setLayout(new GridBagLayout());
 
 

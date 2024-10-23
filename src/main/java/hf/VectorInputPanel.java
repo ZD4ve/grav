@@ -2,17 +2,18 @@ package hf;
 
 import java.awt.BasicStroke;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.LineBorder;
 
 public class VectorInputPanel extends JPanel {
     SimParameters p;
@@ -23,17 +24,24 @@ public class VectorInputPanel extends JPanel {
     Dial dial;
 
     public VectorInputPanel(SimParameters simParams, int vectorIndex) {
+        super();
+
         p = simParams;
         this.vectorIndex = vectorIndex;
         setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(180, 62));
+        Dimension panelSize = new Dimension(180, 60 + 2 + 8);
+        setSize(panelSize);
+        setMinimumSize(panelSize);
+        setPreferredSize(panelSize);
+        setMaximumSize(panelSize);
+        setBorder(new LineBorder(ColorTheme.PR, 4, true));
+        setOpaque(false);
 
-        JLabel label = new JLabel("Star " + (vectorIndex/2+1) + (vectorIndex%2 == 0 ? " speed" : " pos"));
-        dial = new Dial();
+        JLabel label = new JLabel("Star " + (vectorIndex / 2 + 1) + (vectorIndex % 2 == 0 ? " speed" : " pos"));
+        dial = new Dial(new Dimension(60, 60));
         amplitude = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 99999.0, 1.0));
         angle = new JSpinner(new SpinnerNumberModel(0.0, -180.0, 180.0, 5.0));
 
-        dial.setPreferredSize(new Dimension(60, 60));
         amplitude.addChangeListener(e -> readInput());
         angle.addChangeListener(e -> readInput());
 
@@ -63,24 +71,33 @@ public class VectorInputPanel extends JPanel {
         add(angle, gbc);
 
         readData();
-        //angle.setEnabled(false);
+        // angle.setEnabled(false);
     }
 
     private void readInput() {
         double amp = (Double) amplitude.getValue();
         double ang = (Double) angle.getValue();
         p.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
-        dial.repaint(0,0,60,60);
+        dial.repaint(0, 0, 60, 60);
     }
 
     private void readData() {
         Vec2 v = p.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
-        dial.repaint(0,0,60,60);
+        dial.repaint(0, 0, 60, 60);
     }
 
     public class Dial extends Canvas {
+        public Dial(Dimension size) {
+            super();
+            setSize(size);
+            setMinimumSize(size);
+            setPreferredSize(size);
+            setMaximumSize(size);
+            setOpaque(false);
+        }
+
         @Override
         public void paint(Graphics g) {
             var parent = (VectorInputPanel) this.getParent();
@@ -88,19 +105,40 @@ public class VectorInputPanel extends JPanel {
             Graphics2D g2 = (Graphics2D) g;
             Dimension size = this.getSize();
             Dimension rect = new Dimension(Math.min(size.width, size.height), Math.min(size.width, size.height));
-            final int thick = 4;
-            final int thin = 2;
+            final int circle = 6;
+            final int line = 3;
+            final int margin = 4;
 
-            g2.setStroke(new BasicStroke(thick));
-            g2.setColor(Color.BLACK);
-            g2.drawOval(thick / 2, thick / 2, rect.width - thick, rect.height - thick);
+            g2.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(
+                    RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setRenderingHint(
+                    RenderingHints.KEY_FRACTIONALMETRICS,
+                    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
+            g2.setColor(ColorTheme.BG);
+            g2.fillRect(0, 0, size.width, size.height);
+
+            g2.setStroke(new BasicStroke(circle));
+            g2.setColor(ColorTheme.SE);
+            g2.drawOval(
+                    circle / 2 + margin,
+                    circle / 2 + margin,
+                    rect.width - circle - 2 * margin,
+                    rect.height - circle - 2 * margin);
 
             Vec2 v = parent.p.getVector(vectorIndex).normalise();
-            int lenght = rect.width / 2 - 2 * thick;
-            g2.setStroke(new BasicStroke(thin));
-            g.setColor(Color.RED);
-            g2.drawLine(rect.width / 2, rect.height / 2,
-                    (int) (v.x * lenght + rect.width / 2.0), (int) (v.y * lenght + rect.height / 2.0));
+            int lenght = rect.width / 2-margin/2;
+            g2.setStroke(new BasicStroke(line));
+            g.setColor(ColorTheme.PR);
+            g2.drawLine(
+                    rect.width / 2,
+                    rect.height / 2,
+                    (int) (v.x * lenght + rect.width / 2.0),
+                    (int) (v.y * lenght + rect.height / 2.0));
         }
     }
 
