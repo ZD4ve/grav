@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -21,8 +23,14 @@ public class ControlPanel extends JPanel {
         buttonPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets.set(5, 5, 5, 5);
-        buttonPanel.add(new JButton("P"),gbc);
-        buttonPanel.add(new JButton("R"),gbc);
+
+        Icon playIcon = new ImageIcon("resources/play.png");
+        JButton play = new JButton(playIcon);
+        Icon resetIcon = new ImageIcon("resources/undo.png");
+        JButton reset = new JButton(resetIcon);
+
+        buttonPanel.add(play,gbc);
+        buttonPanel.add(reset,gbc);
 
         //Vector Inputs
         JPanel inputPanel = new JPanel();

@@ -1,7 +1,6 @@
 package hf;
 
 import java.awt.BasicStroke;
-import java.awt.Button;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,30 +11,36 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class VectorInputPanel extends JPanel {
     SimParameters p;
     final int vectorIndex;
+
+    JSpinner amplitude;
+    JSpinner angle;
+    Dial dial;
 
     public VectorInputPanel(SimParameters simParams, int vectorIndex) {
         p = simParams;
         this.vectorIndex = vectorIndex;
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(180, 62));
-        
-        Dial dial = new Dial();
-        JLabel label = new JLabel("Vector " + vectorIndex);
-        JTextField amplitude = new JTextField();
-        JTextField angle = new JTextField();
+
+        JLabel label = new JLabel("Star " + (vectorIndex/2+1) + (vectorIndex%2 == 0 ? " speed" : " pos"));
+        dial = new Dial();
+        amplitude = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 99999.0, 1.0));
+        angle = new JSpinner(new SpinnerNumberModel(0.0, -180.0, 180.0, 5.0));
 
         dial.setPreferredSize(new Dimension(60, 60));
-        
-        
+        amplitude.addChangeListener(e -> readInput());
+        angle.addChangeListener(e -> readInput());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets.set(1,5,1,5);
+        gbc.insets.set(1, 5, 1, 5);
 
         gbc.weightx = 0;
         gbc.weighty = 0;
@@ -43,7 +48,6 @@ public class VectorInputPanel extends JPanel {
         gbc.gridy = 0;
         gbc.gridheight = 3;
         add(dial, gbc);
-        
 
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -58,6 +62,22 @@ public class VectorInputPanel extends JPanel {
         gbc.gridy = 2;
         add(angle, gbc);
 
+        readData();
+        //angle.setEnabled(false);
+    }
+
+    private void readInput() {
+        double amp = (Double) amplitude.getValue();
+        double ang = (Double) angle.getValue();
+        p.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
+        dial.repaint(0,0,60,60);
+    }
+
+    private void readData() {
+        Vec2 v = p.getVector(vectorIndex);
+        amplitude.setValue(v.amplitude());
+        angle.setValue(v.angle());
+        dial.repaint(0,0,60,60);
     }
 
     public class Dial extends Canvas {

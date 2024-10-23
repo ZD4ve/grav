@@ -19,7 +19,7 @@ public class GravFrame extends JFrame {
 
 
 
-        ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
+        ImageIcon icon = new ImageIcon("resources/icon.png");
         setIconImage(icon.getImage());
         setBackground(new Color(0xE0E1E3));
 
