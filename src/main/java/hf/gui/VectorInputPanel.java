@@ -97,6 +97,9 @@ public class VectorInputPanel extends JPanel {
     public void unlock(){
         amplitude.setEnabled(true);
         angle.setEnabled(true);
+
+        //TODO: remove this
+        readData();
     }
 
     public class Dial extends Canvas {

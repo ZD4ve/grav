@@ -24,6 +24,7 @@ public class SimParameters implements Serializable {
     }
     public synchronized void startSim() {
         simRunning = true;
+        notifyAll();
         //TODO
     }
     public synchronized void stopSim() {
