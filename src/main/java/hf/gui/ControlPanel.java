@@ -10,6 +10,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import hf.engine.SimParameters;
 
@@ -22,18 +23,17 @@ public class ControlPanel extends JPanel {
     transient Icon pauseIcon = new ImageIcon("resources/pause.png");
     ArrayList<VectorInputPanel> vectorInputs = new ArrayList<>();
 
-
     public ControlPanel(SimParameters simParams) {
         super();
         this.simParams = simParams;
         setPreferredSize(new Dimension(400, 600));
-        setLayout(new BorderLayout(20,20));
+        setLayout(new BorderLayout(20, 20));
         setOpaque(false);
 
-        //Buttons
+        // Buttons
         JPanel buttonPanel = new JPanel();
         add(buttonPanel, BorderLayout.SOUTH);
-        
+
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -46,11 +46,10 @@ public class ControlPanel extends JPanel {
         reset.addActionListener(e -> resetPressed());
         reset.setEnabled(false);
 
+        buttonPanel.add(play, gbc);
+        buttonPanel.add(reset, gbc);
 
-        buttonPanel.add(play,gbc);
-        buttonPanel.add(reset,gbc);
-
-        //Vector Inputs
+        // Vector Inputs
         JPanel inputPanel = new JPanel();
         add(inputPanel, BorderLayout.CENTER);
 
@@ -63,13 +62,13 @@ public class ControlPanel extends JPanel {
         vectorInputs.add(new VectorInputPanel(simParams, 3));
         vectorInputs.add(new VectorInputPanel(simParams, 4));
         vectorInputs.add(new VectorInputPanel(simParams, 5));
-        
+
         gbc = new GridBagConstraints();
-        gbc.insets.set(30,10,30,10);
+        gbc.insets.set(30, 10, 30, 10);
         gbc.gridx = 0;
         gbc.gridy = -1;
         for (int i = 0; i < 6; i++) {
-            if(i%2 == 0){
+            if (i % 2 == 0) {
                 gbc.gridx = 0;
                 gbc.gridy++;
             } else {
@@ -79,22 +78,48 @@ public class ControlPanel extends JPanel {
         }
     }
 
-    void playPressed() {
-        if (simParams.isSimRunning()) {
+    private void playPressed() {
+        if (simParams.isRunning()) {
+            // STOP
             simParams.stopSim();
             reset.setEnabled(false);
             play.setIcon(playIcon);
-            vectorInputs.forEach(v -> v.unlock());
-
+            vectorInputs.forEach(v -> {
+                v.readData();
+                v.unlock();
+            });
         } else {
+            // START
             simParams.startSim();
             reset.setEnabled(true);
             play.setIcon(pauseIcon);
             vectorInputs.forEach(v -> v.lock());
+            new Thread(this::watchForChanges).start();
         }
     }
-    void resetPressed() {
-        //TODO
-        play.doClick();
+
+    private void resetPressed() {
+        simParams.resetSim();
+        reset.setEnabled(false);
+        play.setIcon(playIcon);
+        vectorInputs.forEach(v -> {
+            v.readData();
+            v.unlock();
+        });
+    }
+
+    private void watchForChanges() {
+        while (simParams.isRunning()) {
+            try {
+                Thread.sleep(40);
+                synchronized (simParams) {
+                    simParams.wait();
+                }
+                SwingUtilities.invokeLater(() -> vectorInputs.forEach(v -> v.readData()));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
     }
 }

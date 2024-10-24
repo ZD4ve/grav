@@ -2,7 +2,7 @@ package hf.engine;
 
 import java.io.Serializable;
 
-public class Vec2 implements Serializable{
+public class Vec2 implements Serializable {
     public final double x;
     public final double y;
 
@@ -14,22 +14,27 @@ public class Vec2 implements Serializable{
         this.x = x;
         this.y = y;
     }
-    
+
     public Vec2 add(Vec2 other) {
         return new Vec2(this.x + other.x, this.y + other.y);
     }
+
     public Vec2 sub(Vec2 other) {
         return new Vec2(this.x - other.x, this.y - other.y);
     }
+
     public Vec2 scale(double scalar) {
         return new Vec2(this.x * scalar, this.y * scalar);
     }
+
     public Vec2 normalise() {
         return new Vec2(this.x / amplitude(), this.y / amplitude());
     }
+
     public double amplitude() {
         return Math.hypot(x, y);
     }
+
     public double angle() {
         return Math.toDegrees(Math.atan2(y, x));
     }

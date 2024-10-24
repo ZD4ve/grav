@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         SimParameters simParams = new SimParameters();
         new GravFrame(simParams);
-        new Space(simParams);
+        Space sp = new Space(simParams);
+        sp.simulate();
     }
 }

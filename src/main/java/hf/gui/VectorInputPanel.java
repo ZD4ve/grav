@@ -83,23 +83,21 @@ public class VectorInputPanel extends JPanel {
         dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
-    private void readData() {
+    public void readData() {
         Vec2 v = p.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
         dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
-    public void lock(){
+    public void lock() {
         amplitude.setEnabled(false);
         angle.setEnabled(false);
     }
-    public void unlock(){
+
+    public void unlock() {
         amplitude.setEnabled(true);
         angle.setEnabled(true);
-
-        //TODO: remove this
-        readData();
     }
 
     public class Dial extends Canvas {
@@ -110,6 +108,7 @@ public class VectorInputPanel extends JPanel {
             setPreferredSize(size);
             setMaximumSize(size);
             setOpaque(false);
+            setBackground(ColorTheme.BG);
         }
 
         @Override
@@ -133,9 +132,6 @@ public class VectorInputPanel extends JPanel {
                     RenderingHints.KEY_FRACTIONALMETRICS,
                     RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-            g2.setColor(ColorTheme.BG);
-            g2.fillRect(0, 0, size.width, size.height);
-
             g2.setStroke(new BasicStroke(circle));
             g2.setColor(ColorTheme.SE);
             g2.drawOval(
@@ -145,7 +141,7 @@ public class VectorInputPanel extends JPanel {
                     rect.height - circle - 2 * margin);
 
             Vec2 v = parent.p.getVector(vectorIndex).normalise();
-            int lenght = rect.width / 2-margin/2;
+            int lenght = rect.width / 2 - margin / 2;
             g2.setStroke(new BasicStroke(line));
             g.setColor(ColorTheme.PR);
             g2.drawLine(

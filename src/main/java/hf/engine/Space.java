@@ -1,29 +1,39 @@
 package hf.engine;
 
 public class Space {
-    public static final double G = 6.67430e-11; //N⋅m^2⋅kg−2
-    
+    public static final double G = 6.67430e-11; // N⋅m^2⋅kg−2
+    SimParameters simParams;
+
     Star aStar;
     Star bStar;
     Star cStar;
-    SimParameters simParams;
-    
+
     public Space(SimParameters simulationParameters) {
         simParams = simulationParameters;
         aStar = new Star(simParams, 0, 1);
         bStar = new Star(simParams, 2, 3);
         cStar = new Star(simParams, 4, 5);
+    }
 
+    public void simulate() {
         while (true) {
             try {
                 synchronized (simParams) {
                     simParams.wait();
                 }
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 e.printStackTrace();
             }
-            tick(1*60*60,100);
-
+            long prevTimeStamp = System.currentTimeMillis();
+            while (simParams.isRunning()) {
+                long now = System.currentTimeMillis();
+                tick((now - prevTimeStamp) / 1000.0, 10000);
+                prevTimeStamp = now;
+                synchronized (simParams) {
+                    simParams.notifyAll();
+                }
+            }
         }
     }
 
