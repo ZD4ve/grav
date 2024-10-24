@@ -13,9 +13,17 @@ import javax.swing.JPanel;
 import hf.engine.SimParameters;
 
 public class ControlPanel extends JPanel {
+    SimParameters simParams;
+    JButton play;
+    JButton reset;
+
+    transient Icon playIcon = new ImageIcon("resources/play.png");
+    transient Icon pauseIcon = new ImageIcon("resources/pause.png");
+
 
     public ControlPanel(SimParameters simParams) {
         super();
+        this.simParams = simParams;
         setPreferredSize(new Dimension(400, 600));
         setLayout(new BorderLayout(20,20));
         setOpaque(false);
@@ -29,10 +37,13 @@ public class ControlPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets.set(5, 5, 5, 5);
 
-        Icon playIcon = new ImageIcon("resources/play.png");
-        JButton play = new JButton(playIcon);
         Icon resetIcon = new ImageIcon("resources/undo.png");
-        JButton reset = new JButton(resetIcon);
+        play = new JButton(playIcon);
+        reset = new JButton(resetIcon);
+        play.addActionListener(e -> playPressed());
+        reset.addActionListener(e -> resetPressed());
+        reset.setEnabled(false);
+
 
         buttonPanel.add(play,gbc);
         buttonPanel.add(reset,gbc);
@@ -63,5 +74,20 @@ public class ControlPanel extends JPanel {
         inputPanel.add(new VectorInputPanel(simParams, 4), gbc);
         gbc.gridx = 1;
         inputPanel.add(new VectorInputPanel(simParams, 5), gbc);
+    }
+
+    void playPressed() {
+        if (simParams.isSimRunning()) {
+            simParams.stopSim();
+            reset.setEnabled(false);
+            play.setIcon(playIcon);
+        } else {
+            simParams.startSim();
+            reset.setEnabled(true);
+            play.setIcon(pauseIcon);
+        }
+    }
+    void resetPressed() {
+        //TODO
     }
 }

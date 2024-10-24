@@ -40,7 +40,7 @@ public class VectorInputPanel extends JPanel {
         setBorder(new LineBorder(ColorTheme.PR, 4, true));
         setOpaque(false);
 
-        JLabel label = new JLabel("Star " + (vectorIndex / 2 + 1) + (vectorIndex % 2 == 0 ? " speed" : " pos"));
+        JLabel label = new JLabel("Star " + (vectorIndex / 2 + 1) + (vectorIndex % 2 == 0 ? " pos" : " vel"));
         dial = new Dial(new Dimension(60, 60));
         amplitude = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 99999.0, 1.0));
         angle = new JSpinner(new SpinnerNumberModel(0.0, -180.0, 180.0, 5.0));
@@ -74,21 +74,20 @@ public class VectorInputPanel extends JPanel {
         add(angle, gbc);
 
         readData();
-        // angle.setEnabled(false);
     }
 
     private void readInput() {
         double amp = (Double) amplitude.getValue();
         double ang = (Double) angle.getValue();
         p.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
-        dial.repaint(0, 0, 60, 60);
+        dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
     private void readData() {
         Vec2 v = p.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
-        dial.repaint(0, 0, 60, 60);
+        dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
     public class Dial extends Canvas {
