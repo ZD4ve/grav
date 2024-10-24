@@ -1,4 +1,4 @@
-package hf;
+package hf.gui;
 
 import java.awt.Color;
 

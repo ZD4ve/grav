@@ -1,4 +1,4 @@
-package hf;
+package hf.gui;
 
 import java.awt.BasicStroke;
 import java.awt.Canvas;
@@ -14,6 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
+
+import hf.engine.SimParameters;
+import hf.engine.Vec2;
 
 public class VectorInputPanel extends JPanel {
     SimParameters p;

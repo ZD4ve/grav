@@ -1,6 +1,9 @@
-package hf;
+package hf.gui;
 
 import javax.swing.*;
+
+import hf.engine.SimParameters;
+
 import java.awt.*;
 
 public class GravFrame extends JFrame {

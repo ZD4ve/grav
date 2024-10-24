@@ -1,4 +1,4 @@
-package hf;
+package hf.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -9,6 +9,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import hf.engine.SimParameters;
 
 public class ControlPanel extends JPanel {
 
