@@ -1,6 +1,8 @@
 package hf.engine;
 
 public class Space {
+    public static final double G = 6.67430e-11; //N⋅m^2⋅kg−2
+    
     Star aStar;
     Star bStar;
     Star cStar;

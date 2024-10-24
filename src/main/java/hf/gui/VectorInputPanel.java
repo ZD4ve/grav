@@ -90,6 +90,15 @@ public class VectorInputPanel extends JPanel {
         dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
+    public void lock(){
+        amplitude.setEnabled(false);
+        angle.setEnabled(false);
+    }
+    public void unlock(){
+        amplitude.setEnabled(true);
+        angle.setEnabled(true);
+    }
+
     public class Dial extends Canvas {
         public Dial(Dimension size) {
             super();
