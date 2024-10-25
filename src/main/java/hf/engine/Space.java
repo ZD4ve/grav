@@ -10,9 +10,9 @@ public class Space {
 
     public Space(SimParameters simulationParameters) {
         simParams = simulationParameters;
-        aStar = new Star(simParams, 0, 1);
-        bStar = new Star(simParams, 2, 3);
-        cStar = new Star(simParams, 4, 5);
+        aStar = new Star(simParams, 0);
+        bStar = new Star(simParams, 1);
+        cStar = new Star(simParams, 2);
     }
 
     public void simulate() {
