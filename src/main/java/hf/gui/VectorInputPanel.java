@@ -1,22 +1,11 @@
 package hf.gui;
 
-import java.awt.BasicStroke;
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.RenderingHints;
+import java.awt.*;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import hf.engine.SimParameters;
-import hf.engine.Vec2;
+import hf.engine.*;
 
 public class VectorInputPanel extends JPanel {
     SimParameters p;

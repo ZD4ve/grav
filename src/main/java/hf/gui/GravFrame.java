@@ -1,10 +1,8 @@
 package hf.gui;
 
 import javax.swing.*;
-
-import hf.engine.SimParameters;
-
 import java.awt.*;
+import hf.engine.SimParameters;
 
 public class GravFrame extends JFrame {
     public GravFrame(SimParameters simParams) {
@@ -19,9 +17,8 @@ public class GravFrame extends JFrame {
 
         add(new ControlPanel(simParams), BorderLayout.WEST);
 
-        JPanel placeholder = new JPanel();
-        placeholder.setBackground(ColorTheme.SP);
-        add(placeholder, BorderLayout.CENTER);
+        Observatory obs = new Observatory(simParams);
+        add(obs, BorderLayout.CENTER);
 
         ImageIcon icon = new ImageIcon("resources/icon.png");
         setIconImage(icon.getImage());

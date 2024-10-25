@@ -27,6 +27,22 @@ public class SimParameters implements Serializable {
         vectors.set(index, v);
     }
 
+    public synchronized Vec2 getVel(int index) {
+        return vectors.get(index * 2 + 1);
+    }
+
+    public synchronized void setVel(int index, Vec2 v) {
+        vectors.set(index * 2 + 1, v);
+    }
+
+    public synchronized Vec2 getPos(int index) {
+        return vectors.get(index * 2);
+    }
+
+    public synchronized void setPos(int index, Vec2 v) {
+        vectors.set(index * 2, v);
+    }
+
     public synchronized void startSim() {
         simRunning = true;
         notifyAll();

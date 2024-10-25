@@ -4,15 +4,13 @@ public class Star {
     // double mass = 1.989e30; // kg
     double mass = 1e11; // kg
     SimParameters simParams;
-    int posI;
-    int velI;
+    int index;
     Vec2 position;
     Vec2 velocity;
 
-    public Star(SimParameters simulationParameters, int positionIndex, int velocityIndex) {
+    public Star(SimParameters simulationParameters, int starIndex) {
         simParams = simulationParameters;
-        posI = positionIndex;
-        velI = velocityIndex;
+        index = starIndex;
         readParams();
     }
 
@@ -39,13 +37,13 @@ public class Star {
     }
 
     public void readParams() {
-        position = simParams.getVector(posI);
-        velocity = simParams.getVector(velI);
+        position = simParams.getPos(index);
+        velocity = simParams.getVel(index);
     }
 
     public void writeParams() {
-        simParams.setVector(posI, position);
-        simParams.setVector(velI, velocity);
+        simParams.setPos(index, position);
+        simParams.setVel(index, velocity);
     }
 
     private static double cube(double x) {
