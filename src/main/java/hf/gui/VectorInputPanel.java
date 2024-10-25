@@ -8,17 +8,17 @@ import javax.swing.border.LineBorder;
 import hf.engine.*;
 
 public class VectorInputPanel extends JPanel {
-    SimParameters p;
+    SimParameters simParams;
     final int vectorIndex;
 
     JSpinner amplitude;
     JSpinner angle;
     Dial dial;
 
-    public VectorInputPanel(SimParameters simParams, int vectorIndex) {
+    public VectorInputPanel(SimParameters simulationParameters, int vectorIndex) {
         super();
 
-        p = simParams;
+        simParams = simulationParameters;
         this.vectorIndex = vectorIndex;
         setLayout(new GridBagLayout());
         Dimension panelSize = new Dimension(180, 60 + 2 + 8);
@@ -68,12 +68,14 @@ public class VectorInputPanel extends JPanel {
     private void readInput() {
         double amp = (Double) amplitude.getValue();
         double ang = (Double) angle.getValue();
-        p.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
-        dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
+        simParams.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
+        synchronized (simParams) {
+            simParams.notifyAll();
+        }
     }
 
     public void readData() {
-        Vec2 v = p.getVector(vectorIndex);
+        Vec2 v = simParams.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
         dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
@@ -128,16 +130,14 @@ public class VectorInputPanel extends JPanel {
                     circle / 2 + margin,
                     rect.width - circle - 2 * margin,
                     rect.height - circle - 2 * margin);
-
-            Vec2 v = parent.p.getVector(vectorIndex).normalise();
-            int lenght = rect.width / 2 - margin / 2;
+            Vec2 v = parent.simParams.getVector(vectorIndex).normalise().scale(rect.width / 2.0 - margin / 2.0);
             g2.setStroke(new BasicStroke(line));
-            g.setColor(ColorTheme.PR);
+            g2.setColor(ColorTheme.PR);
             g2.drawLine(
                     rect.width / 2,
                     rect.height / 2,
-                    (int) (v.x * lenght + rect.width / 2.0),
-                    (int) (v.y * lenght + rect.height / 2.0));
+                    (int) (v.x + rect.width / 2.0),
+                    (int) (v.y + rect.height / 2.0));
         }
     }
 

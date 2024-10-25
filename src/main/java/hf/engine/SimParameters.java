@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 public class SimParameters implements Serializable {
     private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
     private transient List<Vec2> stateBeforeStart;
@@ -63,9 +65,28 @@ public class SimParameters implements Serializable {
         }
         vectors.clear();
         vectors.addAll(stateBeforeStart);
+        notifyAll();
     }
 
     public synchronized boolean isRunning() {
         return simRunning;
+    }
+
+    public void onChange(Runnable runOnChange) {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    synchronized (this) {
+                        this.wait();
+                    }
+                    Thread.sleep(100);
+                    SwingUtilities.invokeLater(runOnChange);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
     }
 }

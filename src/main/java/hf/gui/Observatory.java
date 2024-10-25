@@ -1,6 +1,5 @@
 package hf.gui;
 
-import javax.swing.*;
 import java.awt.*;
 import hf.engine.*;
 
@@ -9,8 +8,10 @@ public class Observatory extends Canvas {
     SimParameters simParams;
 
     public Observatory(SimParameters simulationParameters) {
+        super();
+
         simParams = simulationParameters;
-        new Thread(this::watchForChanges).start();
+        simParams.onChange(() -> repaint(0, 0, getWidth(), getHeight()));
     }
 
     @Override
@@ -32,24 +33,9 @@ public class Observatory extends Canvas {
 
         for (int i = 0; i < 3; i += 1) {
             Vec2 pos = simParams.getPos(i);
+
             g2.fillOval((int) pos.x + getWidth() / 2, (int) pos.y + getHeight() / 2, 20, 20);
         }
 
     }
-
-    private void watchForChanges() {
-        while (true) {
-            try {
-                Thread.sleep(40);
-                synchronized (simParams) {
-                    simParams.wait();
-                }
-                SwingUtilities.invokeLater(() -> repaint(0, 0, getWidth(), getHeight()));
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

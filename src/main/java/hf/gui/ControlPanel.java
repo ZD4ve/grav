@@ -1,16 +1,9 @@
 package hf.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import hf.engine.SimParameters;
 
@@ -76,6 +69,8 @@ public class ControlPanel extends JPanel {
             }
             inputPanel.add(vectorInputs.get(i), gbc);
         }
+
+        simParams.onChange(() -> vectorInputs.forEach(v -> v.readData()));
     }
 
     private void playPressed() {
@@ -94,7 +89,6 @@ public class ControlPanel extends JPanel {
             reset.setEnabled(true);
             play.setIcon(pauseIcon);
             vectorInputs.forEach(v -> v.lock());
-            new Thread(this::watchForChanges).start();
         }
     }
 
@@ -108,18 +102,4 @@ public class ControlPanel extends JPanel {
         });
     }
 
-    private void watchForChanges() {
-        while (simParams.isRunning()) {
-            try {
-                Thread.sleep(40);
-                synchronized (simParams) {
-                    simParams.wait();
-                }
-                SwingUtilities.invokeLater(() -> vectorInputs.forEach(v -> v.readData()));
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                e.printStackTrace();
-            }
-        }
-    }
 }

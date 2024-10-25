@@ -1,8 +1,8 @@
 package hf.engine;
 
 public class Star {
-    // double mass = 1.989e30; // kg
-    double mass = 1e11; // kg
+    //double mass = 1.989e30; // kg
+    double mass = 1e14; // kg
     SimParameters simParams;
     int index;
     Vec2 position;
