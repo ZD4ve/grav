@@ -40,7 +40,7 @@ public class ControlPanel extends JPanel {
         recenter = new JButton(recenterIcon);
         play.addActionListener(e -> playPressed());
         reset.addActionListener(e -> resetPressed());
-        recenter.addActionListener(e -> recenterPressed());
+        recenter.addActionListener(e -> simParams.recenter());
         reset.setEnabled(false);
 
         buttonPanel.add(recenter, gbc);
@@ -106,13 +106,6 @@ public class ControlPanel extends JPanel {
         vectorInputs.forEach(v -> {
             v.readData();
             v.unlock();
-        });
-    }
-
-    private void recenterPressed() {
-        simParams.recenter();
-        vectorInputs.forEach(v -> {
-            v.readData();
         });
     }
 
