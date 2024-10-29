@@ -28,7 +28,6 @@ public class SimParameters implements Serializable {
             sum = sum.add(getPos(i));
         }
         Vec2 offset = sum.scale(-2.0 / vectors.size());
-        System.out.println(offset);
         for (int i = 0; i < vectors.size() / 2; i++) {
             setPos(i, getPos(i).add(offset));
         }
