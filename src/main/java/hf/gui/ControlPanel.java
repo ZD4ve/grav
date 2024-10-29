@@ -11,9 +11,12 @@ public class ControlPanel extends JPanel {
     SimParameters simParams;
     JButton play;
     JButton reset;
+    JButton recenter;
 
     transient Icon playIcon = new ImageIcon("resources/play.png");
     transient Icon pauseIcon = new ImageIcon("resources/pause.png");
+    transient Icon resetIcon = new ImageIcon("resources/undo.png");
+    transient Icon recenterIcon = new ImageIcon("resources/recenter.png");
     ArrayList<VectorInputPanel> vectorInputs = new ArrayList<>();
 
     public ControlPanel(SimParameters simParams) {
@@ -32,13 +35,15 @@ public class ControlPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets.set(5, 5, 5, 5);
 
-        Icon resetIcon = new ImageIcon("resources/undo.png");
         play = new JButton(playIcon);
         reset = new JButton(resetIcon);
+        recenter = new JButton(recenterIcon);
         play.addActionListener(e -> playPressed());
         reset.addActionListener(e -> resetPressed());
+        recenter.addActionListener(e -> recenterPressed());
         reset.setEnabled(false);
 
+        buttonPanel.add(recenter, gbc);
         buttonPanel.add(play, gbc);
         buttonPanel.add(reset, gbc);
 
@@ -78,6 +83,7 @@ public class ControlPanel extends JPanel {
             // STOP
             simParams.stopSim();
             reset.setEnabled(false);
+            recenter.setEnabled(true);
             play.setIcon(playIcon);
             vectorInputs.forEach(v -> {
                 v.readData();
@@ -87,6 +93,7 @@ public class ControlPanel extends JPanel {
             // START
             simParams.startSim();
             reset.setEnabled(true);
+            recenter.setEnabled(false);
             play.setIcon(pauseIcon);
             vectorInputs.forEach(v -> v.lock());
         }
@@ -99,6 +106,13 @@ public class ControlPanel extends JPanel {
         vectorInputs.forEach(v -> {
             v.readData();
             v.unlock();
+        });
+    }
+
+    private void recenterPressed() {
+        simParams.recenter();
+        vectorInputs.forEach(v -> {
+            v.readData();
         });
     }
 

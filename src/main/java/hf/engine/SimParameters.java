@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 
 public class SimParameters implements Serializable {
     private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
+    private final double mass = 1e14;// kg 1.989e30s
     private transient List<Vec2> stateBeforeStart;
     private transient boolean simRunning = false;
 
@@ -19,6 +20,19 @@ public class SimParameters implements Serializable {
         vectors.add(new Vec2(-53, -79));
         vectors.add(new Vec2(5, 7));
         vectors.add(new Vec2(0, 1));
+    }
+
+    public synchronized void recenter() {
+        Vec2 sum = new Vec2(0, 0);
+        for (int i = 0; i < vectors.size() / 2; i++) {
+            sum = sum.add(getPos(i));
+        }
+        Vec2 offset = sum.scale(-2.0 / vectors.size());
+        System.out.println(offset);
+        for (int i = 0; i < vectors.size() / 2; i++) {
+            setPos(i, getPos(i).add(offset));
+        }
+        notifyAll();
     }
 
     public synchronized Vec2 getVector(int index) {
@@ -43,6 +57,10 @@ public class SimParameters implements Serializable {
 
     public synchronized void setPos(int index, Vec2 v) {
         vectors.set(index * 2, v);
+    }
+
+    public synchronized double getMass() {
+        return mass;
     }
 
     public synchronized void startSim() {

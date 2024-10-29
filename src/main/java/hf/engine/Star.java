@@ -1,8 +1,6 @@
 package hf.engine;
 
 public class Star {
-    //double mass = 1.989e30; // kg
-    double mass = 1e14; // kg
     SimParameters simParams;
     int index;
     Vec2 position;
@@ -13,6 +11,8 @@ public class Star {
         index = starIndex;
         readParams();
     }
+
+
 
     /**
      * Calculates the acceleration on this star due to the gravitational forces
@@ -25,9 +25,9 @@ public class Star {
      */
     public Vec2 calculateAccelaration(Star a, Star b) {
         Vec2 accA = this.position.sub(a.position)
-                .scale(-Space.G * a.mass / cube(this.position.sub(a.position).amplitude()));
+                .scale(-Space.G * simParams.getMass() / cube(this.position.sub(a.position).amplitude()));
         Vec2 accB = this.position.sub(b.position)
-                .scale(-Space.G * b.mass / cube(this.position.sub(b.position).amplitude()));
+                .scale(-Space.G * simParams.getMass() / cube(this.position.sub(b.position).amplitude()));
         return accA.add(accB);
     }
 

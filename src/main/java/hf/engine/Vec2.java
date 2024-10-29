@@ -38,5 +38,11 @@ public class Vec2 implements Serializable {
     public double angle() {
         return Math.toDegrees(Math.atan2(y, x));
     }
+    @Override
+    public String toString() {
+        return "Vec2{" + "x=" + x + ", y=" + y + '}';
+    }
+
+
 
 }

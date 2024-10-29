@@ -14,7 +14,7 @@ public class Space {
         bStar = new Star(simParams, 1);
         cStar = new Star(simParams, 2);
     }
-
+    
     public void simulate() {
         while (true) {
             try {
