@@ -12,25 +12,16 @@ public class Observatory extends Canvas {
 
     SimParameters simParams;
     Vec2[][] history = new Vec2[3][MEMORY];
-    transient Image buffer;
     int historyIndex = 0;
 
     public Observatory(SimParameters simulationParameters) {
         simParams = simulationParameters;
         Renderer.addCanvas(this);
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent evt) {
-                Component c = (Component) evt.getSource();
-                buffer = createImage(c.getWidth(), c.getHeight());
-            }
-        });
     }
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+        Graphics2D g2 = (Graphics2D) g;
         g2.setColor(ColorTheme.SP);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -63,9 +54,6 @@ public class Observatory extends Canvas {
             history[p][historyIndex] = simParams.getPos(p);
         }
         historyIndex = (historyIndex + 1) % MEMORY;
-
-        g.drawImage(buffer, 0, 0, this);
-
     }
 
     Vec2 worldToScreen(Vec2 pos) {
