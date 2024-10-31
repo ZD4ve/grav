@@ -1,12 +1,12 @@
 package hf.gui;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+
+import javax.swing.JComponent;
 
 import hf.engine.*;
 
-public class Observatory extends Canvas {
+public class Observatory extends JComponent {
 
     static final int MEMORY = 200;
 
@@ -16,11 +16,11 @@ public class Observatory extends Canvas {
 
     public Observatory(SimParameters simulationParameters) {
         simParams = simulationParameters;
-        Renderer.addCanvas(this);
+        Renderer.addComponent(this);
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(ColorTheme.SP);
         g2.fillRect(0, 0, getWidth(), getHeight());

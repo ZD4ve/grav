@@ -61,7 +61,7 @@ public class VectorInputPanel extends JPanel {
         add(angle, gbc);
 
         readData();
-        Renderer.addCanvas(dial);
+        Renderer.addComponent(dial);
     }
 
     private void readInput() {
@@ -89,7 +89,7 @@ public class VectorInputPanel extends JPanel {
         angle.setEnabled(true);
     }
 
-    public class Dial extends Canvas {
+    public class Dial extends JComponent {
         public Dial(Dimension size) {
             setSize(size);
             setMinimumSize(size);
@@ -100,7 +100,7 @@ public class VectorInputPanel extends JPanel {
         }
 
         @Override
-        public void paint(Graphics g) {
+        public void paintComponent(Graphics g) {
             var parent = (VectorInputPanel) this.getParent();
 
             Graphics2D g2 = (Graphics2D) g;
@@ -109,18 +109,16 @@ public class VectorInputPanel extends JPanel {
             final int circle = 6;
             final int line = 3;
             final int margin = 4;
-            /*
-             * 
-             * g2.setRenderingHint(
-             * RenderingHints.KEY_ANTIALIASING,
-             * RenderingHints.VALUE_ANTIALIAS_ON);
-             * g2.setRenderingHint(
-             * RenderingHints.KEY_TEXT_ANTIALIASING,
-             * RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-             * g2.setRenderingHint(
-             * RenderingHints.KEY_FRACTIONALMETRICS,
-             * RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-             */
+
+            g2.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(
+                    RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setRenderingHint(
+                    RenderingHints.KEY_FRACTIONALMETRICS,
+                    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
             g2.setStroke(new BasicStroke(circle));
             g2.setColor(ColorTheme.SE);
