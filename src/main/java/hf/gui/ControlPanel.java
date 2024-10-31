@@ -74,7 +74,7 @@ public class ControlPanel extends JPanel {
             }
             inputPanel.add(vectorInputs.get(i), gbc);
         }
-
+        
         simParams.onChange(() -> vectorInputs.forEach(v -> v.readData()));
     }
 

@@ -10,8 +10,10 @@ import javax.swing.SwingUtilities;
 public class SimParameters implements Serializable {
     private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
     private final double mass = 1e14;// kg 1.989e30s
+
     private transient List<Vec2> stateBeforeStart;
     private transient boolean simRunning = false;
+    private transient List<Runnable> runOnChange;
 
     public SimParameters() {
         vectors.add(new Vec2(5, 13));
@@ -20,6 +22,8 @@ public class SimParameters implements Serializable {
         vectors.add(new Vec2(-53, -79));
         vectors.add(new Vec2(5, 7));
         vectors.add(new Vec2(0, 1));
+        new Thread(this::changeListener).start();
+
     }
 
     public synchronized void recenter() {
@@ -89,21 +93,35 @@ public class SimParameters implements Serializable {
         return simRunning;
     }
 
-    public void onChange(Runnable runOnChange) {
-        new Thread(() -> {
-            while (true) {
-                try {
-                    synchronized (this) {
-                        this.wait();
-                    }
-                    Thread.sleep(100);
-                    SwingUtilities.invokeLater(runOnChange);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    e.printStackTrace();
-                }
-            }
+    public void onChange(Runnable task) {
+        if (runOnChange == null) {
+            runOnChange = Collections.synchronizedList(new ArrayList<>());
+        }
+        runOnChange.add(task);
+    }
 
-        }).start();
+    private void changeListener() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+        if (runOnChange == null) {
+            runOnChange = Collections.synchronizedList(new ArrayList<>());
+        }
+        while (true) {
+            try {
+                synchronized (this) {
+                    this.wait();
+                }
+                Thread.sleep(40);
+                runOnChange.forEach(SwingUtilities::invokeLater);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
+
     }
 }

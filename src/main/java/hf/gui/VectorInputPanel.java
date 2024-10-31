@@ -63,6 +63,8 @@ public class VectorInputPanel extends JPanel {
         add(angle, gbc);
 
         readData();
+        
+        simParams.onChange(() -> dial.repaint(0, 0, dial.getWidth(), dial.getHeight()));
     }
 
     private void readInput() {
@@ -78,7 +80,6 @@ public class VectorInputPanel extends JPanel {
         Vec2 v = simParams.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
-        dial.repaint(0, 0, dial.getWidth(), dial.getHeight());
     }
 
     public void lock() {
