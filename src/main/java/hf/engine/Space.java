@@ -14,7 +14,7 @@ public class Space {
         bStar = new Star(simParams, 1);
         cStar = new Star(simParams, 2);
     }
-    
+
     public void simulate() {
         while (true) {
             try {
@@ -22,13 +22,13 @@ public class Space {
                     simParams.wait();
                 }
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
             long prevTimeStamp = System.currentTimeMillis();
             while (simParams.isRunning()) {
                 long now = System.currentTimeMillis();
-                tick((now - prevTimeStamp) / 1000.0, 10000);
+                tick((now - prevTimeStamp) / 1000.0, 1000);
                 prevTimeStamp = now;
                 synchronized (simParams) {
                     simParams.notifyAll();

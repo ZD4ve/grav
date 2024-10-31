@@ -1,25 +1,36 @@
 package hf.gui;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import hf.engine.*;
 
 public class Observatory extends Canvas {
 
-    static final int MEMORY = 100;
+    static final int MEMORY = 200;
 
     SimParameters simParams;
     Vec2[][] history = new Vec2[3][MEMORY];
-
+    transient Image buffer;
     int historyIndex = 0;
 
     public Observatory(SimParameters simulationParameters) {
         simParams = simulationParameters;
-        simParams.onChange(() -> repaint(0, 0, getWidth(), getHeight()));
+        Renderer.addCanvas(this);
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent evt) {
+                Component c = (Component) evt.getSource();
+                buffer = createImage(c.getWidth(), c.getHeight());
+            }
+        });
     }
 
     @Override
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
         g2.setColor(ColorTheme.SP);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -33,16 +44,18 @@ public class Observatory extends Canvas {
                 RenderingHints.KEY_FRACTIONALMETRICS,
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
+        // trail
         g2.setColor(ColorTheme.PR);
         for (int p = 0; p < 3; p += 1) {
             for (int i = 0; i < MEMORY; i++) {
                 if (history[p][i] != null) {
                     Vec2 pos = worldToScreen(history[p][i]);
-                    g2.fillOval((int) pos.x - 3, (int) pos.y - 3, 6, 6);
+                    g2.fillOval((int) pos.x - 2, (int) pos.y - 2, 4, 4);
                 }
             }
-
         }
+
+        // stars
         for (int p = 0; p < 3; p++) {
             g2.setColor(ColorTheme.SE);
             Vec2 pos = worldToScreen(simParams.getPos(p));
@@ -50,6 +63,8 @@ public class Observatory extends Canvas {
             history[p][historyIndex] = simParams.getPos(p);
         }
         historyIndex = (historyIndex + 1) % MEMORY;
+
+        g.drawImage(buffer, 0, 0, this);
 
     }
 

@@ -20,7 +20,6 @@ public class ControlPanel extends JPanel {
     ArrayList<VectorInputPanel> vectorInputs = new ArrayList<>();
 
     public ControlPanel(SimParameters simParams) {
-        super();
         this.simParams = simParams;
         setPreferredSize(new Dimension(400, 600));
         setLayout(new BorderLayout(20, 20));
@@ -74,8 +73,24 @@ public class ControlPanel extends JPanel {
             }
             inputPanel.add(vectorInputs.get(i), gbc);
         }
-        
-        simParams.onChange(() -> vectorInputs.forEach(v -> v.readData()));
+
+        new Thread(this::updateInputsOnChange, "Input Updater").start();
+
+    }
+
+    private void updateInputsOnChange() {
+        while (true) {
+            try {
+                synchronized (this) {
+                    this.wait();
+                }
+                SwingUtilities.invokeLater(() -> vectorInputs.forEach(v -> v.readData()));
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     private void playPressed() {

@@ -16,8 +16,6 @@ public class VectorInputPanel extends JPanel {
     Dial dial;
 
     public VectorInputPanel(SimParameters simulationParameters, int vectorIndex) {
-        super();
-
         simParams = simulationParameters;
         this.vectorIndex = vectorIndex;
         setLayout(new GridBagLayout());
@@ -63,8 +61,7 @@ public class VectorInputPanel extends JPanel {
         add(angle, gbc);
 
         readData();
-        
-        simParams.onChange(() -> dial.repaint(0, 0, dial.getWidth(), dial.getHeight()));
+        Renderer.addCanvas(dial);
     }
 
     private void readInput() {
@@ -94,7 +91,6 @@ public class VectorInputPanel extends JPanel {
 
     public class Dial extends Canvas {
         public Dial(Dimension size) {
-            super();
             setSize(size);
             setMinimumSize(size);
             setPreferredSize(size);
@@ -113,16 +109,18 @@ public class VectorInputPanel extends JPanel {
             final int circle = 6;
             final int line = 3;
             final int margin = 4;
-
-            g2.setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(
-                    RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2.setRenderingHint(
-                    RenderingHints.KEY_FRACTIONALMETRICS,
-                    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            /*
+             * 
+             * g2.setRenderingHint(
+             * RenderingHints.KEY_ANTIALIASING,
+             * RenderingHints.VALUE_ANTIALIAS_ON);
+             * g2.setRenderingHint(
+             * RenderingHints.KEY_TEXT_ANTIALIASING,
+             * RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+             * g2.setRenderingHint(
+             * RenderingHints.KEY_FRACTIONALMETRICS,
+             * RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+             */
 
             g2.setStroke(new BasicStroke(circle));
             g2.setColor(ColorTheme.SE);
