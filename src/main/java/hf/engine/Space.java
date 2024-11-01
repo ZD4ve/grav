@@ -8,11 +8,11 @@ public class Space {
     Star bStar;
     Star cStar;
 
-    public Space(SimParameters simulationParameters) {
-        simParams = simulationParameters;
-        aStar = new Star(simParams, 0);
-        bStar = new Star(simParams, 1);
-        cStar = new Star(simParams, 2);
+    public Space() {
+        simParams = SimParameters.getInstance();
+        aStar = new Star(0);
+        bStar = new Star(1);
+        cStar = new Star(2);
     }
 
     public void simulate() {

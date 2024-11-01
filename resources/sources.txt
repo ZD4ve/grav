@@ -1,5 +1,5 @@
 icon.png:
 Made by me.
 
-undo.png, play.png, pause.png, recenter.png:
+undo.png, play.png, pause.png, recenter.png, folder.png, save.png:
 https://www.flaticon.com/packs/media-player-ui-3

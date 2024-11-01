@@ -9,12 +9,12 @@ public class Observatory extends JComponent {
 
     static final int MEMORY = 100;
 
-    SimParameters simParams;
+    transient SimParameters simParams;
     Vec2[][] history = new Vec2[3][MEMORY];
     double historyIndex = 0;
 
-    public Observatory(SimParameters simulationParameters) {
-        simParams = simulationParameters;
+    public Observatory() {
+        simParams = SimParameters.getInstance();
         Renderer.addComponent(this);
     }
 

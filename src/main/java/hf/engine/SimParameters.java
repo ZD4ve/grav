@@ -1,24 +1,35 @@
 package hf.engine;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SimParameters implements Serializable {
+public class SimParameters {
+    public static SimParameters instance;
+
     private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
     private final double mass = 1e16;// kg 1.989e30s
-
-    private transient List<Vec2> stateBeforeStart;
-    private transient boolean simRunning = false;
+    private List<Vec2> stateBeforeStart;
+    private boolean simRunning = false;
 
     public SimParameters() {
+        if (instance != null) {
+            throw new IllegalStateException("Already instantiated");
+        }
+        instance = this;
         vectors.add(Vec2.fromPolar(0, 100));
         vectors.add(Vec2.fromPolar(90, 50));
         vectors.add(Vec2.fromPolar(120, 100));
         vectors.add(Vec2.fromPolar(210, 50));
         vectors.add(Vec2.fromPolar(240, 100));
         vectors.add(Vec2.fromPolar(330, 50));
+    }
+
+    public static SimParameters getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Not instantiated");
+        }
+        return instance;
     }
 
     public synchronized void recenter() {

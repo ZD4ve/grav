@@ -6,13 +6,11 @@ public class Star {
     Vec2 position;
     Vec2 velocity;
 
-    public Star(SimParameters simulationParameters, int starIndex) {
-        simParams = simulationParameters;
+    public Star(int starIndex) {
+        simParams = SimParameters.getInstance();
         index = starIndex;
         readParams();
     }
-
-
 
     /**
      * Calculates the acceleration on this star due to the gravitational forces

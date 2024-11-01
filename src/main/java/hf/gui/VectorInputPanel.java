@@ -7,15 +7,15 @@ import javax.swing.border.LineBorder;
 import hf.engine.*;
 
 public class VectorInputPanel extends JPanel {
-    SimParameters simParams;
+    transient SimParameters simParams;
     final int vectorIndex;
 
     JSpinner amplitude;
     JSpinner angle;
     Dial dial;
 
-    public VectorInputPanel(SimParameters simulationParameters, int vectorIndex) {
-        simParams = simulationParameters;
+    public VectorInputPanel(int vectorIndex) {
+        simParams = SimParameters.getInstance();
         this.vectorIndex = vectorIndex;
         setLayout(new GridBagLayout());
         Dimension panelSize = new Dimension(180, 60 + 2 + 8);
