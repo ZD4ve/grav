@@ -73,24 +73,6 @@ public class ControlPanel extends JPanel {
             }
             inputPanel.add(vectorInputs.get(i), gbc);
         }
-
-        new Thread(this::updateInputsOnChange, "Input Updater").start();
-
-    }
-
-    private void updateInputsOnChange() {
-        while (true) {
-            try {
-                synchronized (this) {
-                    this.wait();
-                }
-                SwingUtilities.invokeLater(() -> vectorInputs.forEach(v -> v.readData()));
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 
     private void playPressed() {

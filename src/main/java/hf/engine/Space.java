@@ -25,14 +25,22 @@ public class Space {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
-            long prevTimeStamp = System.currentTimeMillis();
+            long prevTimeStamp = System.nanoTime();
+            int divisons = 1;
             while (simParams.isRunning()) {
-                long now = System.currentTimeMillis();
-                tick((now - prevTimeStamp) / 1000.0, 1000);
-                prevTimeStamp = now;
+                long now = System.nanoTime();
+                long dt = now - prevTimeStamp;
+                tick(dt / 1e9, divisons);
                 synchronized (simParams) {
                     simParams.notifyAll();
                 }
+                if (dt < 1e9 / 240) {
+                    divisons *= 2;
+                }
+                if (dt > 1e9 / 60) {
+                    divisons /= 2;
+                }
+                prevTimeStamp = now;
             }
         }
     }

@@ -1,6 +1,7 @@
 package hf.gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -24,10 +25,11 @@ public class VectorInputPanel extends JPanel {
         setMinimumSize(panelSize);
         setPreferredSize(panelSize);
         setMaximumSize(panelSize);
-        setBorder(new LineBorder(ColorTheme.PR, 4, true));
+        setBorder(new LineBorder(ColorTheme.Blue, 4, true));
         setOpaque(false);
 
-        JLabel label = new JLabel("Star " + (vectorIndex / 2 + 1) + (vectorIndex % 2 == 0 ? " pos" : " vel"));
+        JLabel label = new JLabel(
+                "Star " + "αβγ".toCharArray()[vectorIndex / 2] + (vectorIndex % 2 == 0 ? " pos" : " vel"));
         dial = new Dial(new Dimension(60, 60));
         amplitude = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 99999.0, 1.0));
         angle = new JSpinner(new SpinnerNumberModel(0.0, -180.0, 180.0, 5.0));
@@ -62,15 +64,16 @@ public class VectorInputPanel extends JPanel {
 
         readData();
         Renderer.addComponent(dial);
+
+        new Timer(100, e -> readData()).start();
     }
 
     private void readInput() {
+        if (simParams.isRunning())
+            return;
         double amp = (Double) amplitude.getValue();
         double ang = (Double) angle.getValue();
         simParams.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
-        synchronized (simParams) {
-            simParams.notifyAll();
-        }
     }
 
     public void readData() {
@@ -96,7 +99,7 @@ public class VectorInputPanel extends JPanel {
             setPreferredSize(size);
             setMaximumSize(size);
             setOpaque(false);
-            setBackground(ColorTheme.BG);
+            setBackground(ColorTheme.Background);
         }
 
         @Override
@@ -121,7 +124,7 @@ public class VectorInputPanel extends JPanel {
                     RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
             g2.setStroke(new BasicStroke(circle));
-            g2.setColor(ColorTheme.SE);
+            g2.setColor(ColorTheme.Yellow);
             g2.drawOval(
                     circle / 2 + margin,
                     circle / 2 + margin,
@@ -129,7 +132,7 @@ public class VectorInputPanel extends JPanel {
                     rect.height - circle - 2 * margin);
             Vec2 v = parent.simParams.getVector(vectorIndex).normalise().scale(rect.width / 2.0 - margin / 2.0);
             g2.setStroke(new BasicStroke(line));
-            g2.setColor(ColorTheme.PR);
+            g2.setColor(ColorTheme.Blue);
             g2.drawLine(
                     rect.width / 2,
                     rect.height / 2,

@@ -7,19 +7,18 @@ import java.util.List;
 
 public class SimParameters implements Serializable {
     private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
-    private final double mass = 1e14;// kg 1.989e30s
+    private final double mass = 1e16;// kg 1.989e30s
 
     private transient List<Vec2> stateBeforeStart;
     private transient boolean simRunning = false;
 
     public SimParameters() {
-        vectors.add(new Vec2(5, 13));
-        vectors.add(new Vec2(8, -63));
-        vectors.add(new Vec2(-9, 9));
-        vectors.add(new Vec2(-53, -79));
-        vectors.add(new Vec2(5, 7));
-        vectors.add(new Vec2(0, 1));
-
+        vectors.add(Vec2.fromPolar(0, 100));
+        vectors.add(Vec2.fromPolar(90, 50));
+        vectors.add(Vec2.fromPolar(120, 100));
+        vectors.add(Vec2.fromPolar(210, 50));
+        vectors.add(Vec2.fromPolar(240, 100));
+        vectors.add(Vec2.fromPolar(330, 50));
     }
 
     public synchronized void recenter() {
@@ -31,7 +30,6 @@ public class SimParameters implements Serializable {
         for (int i = 0; i < vectors.size() / 2; i++) {
             setPos(i, getPos(i).add(offset));
         }
-        notifyAll();
     }
 
     public synchronized Vec2 getVector(int index) {
@@ -82,7 +80,6 @@ public class SimParameters implements Serializable {
         }
         vectors.clear();
         vectors.addAll(stateBeforeStart);
-        notifyAll();
     }
 
     public synchronized boolean isRunning() {

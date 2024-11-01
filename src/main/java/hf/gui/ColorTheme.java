@@ -7,8 +7,9 @@ public class ColorTheme {
         throw new IllegalStateException("Utility class");
     }
 
-    static final Color BG = new Color(0xf4f4f9);
-    static final Color PR = new Color(0x181359);
-    static final Color SE = new Color(0xa8b21a);
-    static final Color SP = new Color(0x060511);
+    static final Color Background = new Color(0xf4f4f9);
+    static final Color Blue = new Color(0x181359);
+    static final Color Yellow = new Color(0xccc92c);
+    static final Color Space = new Color(0x060511);
+    static final Color Trail = new Color(0xffffff);
 }

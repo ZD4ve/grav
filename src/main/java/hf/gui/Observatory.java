@@ -1,18 +1,17 @@
 package hf.gui;
 
 import java.awt.*;
-
 import javax.swing.JComponent;
 
 import hf.engine.*;
 
 public class Observatory extends JComponent {
 
-    static final int MEMORY = 200;
+    static final int MEMORY = 100;
 
     SimParameters simParams;
     Vec2[][] history = new Vec2[3][MEMORY];
-    int historyIndex = 0;
+    double historyIndex = 0;
 
     public Observatory(SimParameters simulationParameters) {
         simParams = simulationParameters;
@@ -22,7 +21,7 @@ public class Observatory extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(ColorTheme.SP);
+        g2.setColor(ColorTheme.Space);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         g2.setRenderingHint(
@@ -36,7 +35,7 @@ public class Observatory extends JComponent {
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         // trail
-        g2.setColor(ColorTheme.PR);
+        g2.setColor(ColorTheme.Trail);
         for (int p = 0; p < 3; p += 1) {
             for (int i = 0; i < MEMORY; i++) {
                 if (history[p][i] != null) {
@@ -47,13 +46,15 @@ public class Observatory extends JComponent {
         }
 
         // stars
+        g2.setColor(ColorTheme.Yellow);
         for (int p = 0; p < 3; p++) {
-            g2.setColor(ColorTheme.SE);
             Vec2 pos = worldToScreen(simParams.getPos(p));
-            g2.fillOval((int) pos.x - 10, (int) pos.y - 10, 20, 20);
-            history[p][historyIndex] = simParams.getPos(p);
+            g2.fillOval((int) pos.x - 12, (int) pos.y - 12, 24, 24);
+            history[p][(int) historyIndex] = simParams.getPos(p);
         }
-        historyIndex = (historyIndex + 1) % MEMORY;
+        if (simParams.isRunning()) {
+            historyIndex = (historyIndex + 0.1) % MEMORY;
+        }
     }
 
     Vec2 worldToScreen(Vec2 pos) {

@@ -12,8 +12,7 @@ public class GravFrame extends JFrame {
         setSize(1000, 600);
         setResizable(true);
         setLayout(new BorderLayout(20, 20));
-        getContentPane().setBackground(ColorTheme.BG);
-
+        getContentPane().setBackground(ColorTheme.Background);
 
         add(new ControlPanel(simParams), BorderLayout.WEST);
 

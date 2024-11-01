@@ -18,7 +18,7 @@ public class Renderer extends Timer {
     }
 
     public Renderer() {
-        super(40, Renderer::paintAll);
+        super(7, Renderer::paintAll);
         setInitialDelay(100);
         start();
     }
