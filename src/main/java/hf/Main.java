@@ -6,9 +6,8 @@ import hf.gui.GravFrame;
 
 public class Main {
     public static void main(String[] args) {
-        SimParameters simParams = new SimParameters();
+        new SimParameters();
         new GravFrame();
-        Space sp = new Space();
-        sp.simulate();
+        new Space().simulate();
     }
 }

@@ -3,8 +3,6 @@ package hf.gui;
 import javax.swing.*;
 import java.awt.*;
 
-import hf.engine.SimParameters;
-
 public class GravFrame extends JFrame {
     public GravFrame() {
         setTitle("grav");
