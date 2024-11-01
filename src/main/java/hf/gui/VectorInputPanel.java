@@ -1,8 +1,6 @@
 package hf.gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -106,34 +104,34 @@ public class VectorInputPanel extends JPanel {
         public void paintComponent(Graphics g) {
             var parent = (VectorInputPanel) this.getParent();
 
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2d = (Graphics2D) g;
             Dimension size = this.getSize();
             Dimension rect = new Dimension(Math.min(size.width, size.height), Math.min(size.width, size.height));
             final int circle = 6;
             final int line = 3;
             final int margin = 4;
 
-            g2.setRenderingHint(
+            g2d.setRenderingHint(
                     RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(
+            g2d.setRenderingHint(
                     RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2.setRenderingHint(
+            g2d.setRenderingHint(
                     RenderingHints.KEY_FRACTIONALMETRICS,
                     RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-            g2.setStroke(new BasicStroke(circle));
-            g2.setColor(ColorTheme.Yellow);
-            g2.drawOval(
+            g2d.setStroke(new BasicStroke(circle));
+            g2d.setColor(ColorTheme.Yellow);
+            g2d.drawOval(
                     circle / 2 + margin,
                     circle / 2 + margin,
                     rect.width - circle - 2 * margin,
                     rect.height - circle - 2 * margin);
             Vec2 v = parent.simParams.getVector(vectorIndex).normalise().scale(rect.width / 2.0 - margin / 2.0);
-            g2.setStroke(new BasicStroke(line));
-            g2.setColor(ColorTheme.Blue);
-            g2.drawLine(
+            g2d.setStroke(new BasicStroke(line));
+            g2d.setColor(ColorTheme.Blue);
+            g2d.drawLine(
                     rect.width / 2,
                     rect.height / 2,
                     (int) (v.x + rect.width / 2.0),
