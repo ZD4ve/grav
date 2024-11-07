@@ -30,10 +30,12 @@ public class VectorInputPanel extends JPanel {
                 "Star " + "αβγ".toCharArray()[vectorIndex / 2] + (vectorIndex % 2 == 0 ? " pos" : " vel"));
         dial = new Dial(new Dimension(60, 60));
         amplitude = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 99999.0, 1.0));
-        angle = new JSpinner(new SpinnerNumberModel(0.0, -180.0, 180.0, 5.0));
+        angle = new JSpinner(new SpinnerNumberModel(0.0, -360.0, 360.0, 5.0));
 
         amplitude.addChangeListener(e -> readInput());
         angle.addChangeListener(e -> readInput());
+        amplitude.setToolTipText("Amplitude");
+        angle.setToolTipText("Angle");
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;

@@ -1,9 +1,12 @@
 package hf.engine;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.json.*;
 
 public class SimParameters {
     public static final String FILE_EXTENSION = "grav";
@@ -62,11 +65,39 @@ public class SimParameters {
     }
 
     public synchronized void loadFromFile(File file) {
-        // TODO
+        try (FileInputStream is = new FileInputStream(file)) {
+            JSONObject js = new JSONObject(new String(is.readAllBytes()));
+            List<Vec2> newVectors = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                JSONObject star = js.getJSONObject("Star" + i);
+                JSONArray pos = star.getJSONArray("pos");
+                JSONArray vel = star.getJSONArray("vel");
+                newVectors.add(new Vec2(pos.getDouble(0), pos.getDouble(1)));
+                newVectors.add(new Vec2(vel.getDouble(0), vel.getDouble(1)));
+            }
+            vectors.clear();
+            vectors.addAll(newVectors);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public synchronized void saveToFile(File file) {
-        // TODO
+        try (FileOutputStream is = new FileOutputStream(file)) {
+            JSONObject js = new JSONObject();
+            for (int i = 0; i < 3; i++) {
+                JSONObject star = new JSONObject();
+                var pos = new JSONArray(new double[] { getPos(i).x, getPos(i).y });
+                var vel = new JSONArray(new double[] { getVel(i).x, getVel(i).y });
+                star.put("pos", pos);
+                star.put("vel", vel);
+                js.put("Star" + i, star);
+            }
+            is.write(js.toString().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Getters and setters

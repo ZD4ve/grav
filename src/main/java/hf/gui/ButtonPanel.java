@@ -39,6 +39,12 @@ public class ButtonPanel extends JPanel {
         reset.addActionListener(this::resetEvent);
         recenter.addActionListener(e -> simParams.recenter());
 
+        load.setToolTipText("Load configuration from file");
+        save.setToolTipText("Save configuration to file");
+        play.setToolTipText("Start/Stop simulation");
+        reset.setToolTipText("Reset simulation to state before start");
+        recenter.setToolTipText("Recenter stars around the center of mass");
+
         reset.setEnabled(false);
 
         add(load, gbc);
