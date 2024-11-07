@@ -64,7 +64,7 @@ public class Observatory extends JComponent {
                     (int) (pos.y - Math.sin(Math.PI / 3) * starRadius()),
                     (int) pos.x + 15, (int) pos.y - 30);
             g2d.drawLine((int) pos.x + 15, (int) pos.y - 30, (int) pos.x + 53, (int) pos.y - 30);
-            g2d.drawString("Star " + "αβγ".toCharArray()[p], (int) pos.x + 17, (int) pos.y - 32);
+            g2d.drawString("Star " + "αβγ".charAt(p), (int) pos.x + 17, (int) pos.y - 32);
         }
 
         if (simParams.isRunning()) {
