@@ -1,11 +1,7 @@
 package hf.engine;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 import org.json.*;
 
 public class SimParameters {
@@ -13,14 +9,14 @@ public class SimParameters {
 
     private static SimParameters instance;
 
-    private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
+    final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
     private double mass = 1e16;// kg 1.989e30s
     private List<Vec2> stateBeforeStart;
     private boolean simRunning = false;
 
     public SimParameters() {
         if (instance != null) {
-            throw new IllegalStateException("Already instantiated");
+            throw new IllegalStateException("Singleton class already instantiated");
         }
         instance = this; // NOSONAR
         vectors.add(Vec2.fromPolar(0, 100));
@@ -64,7 +60,7 @@ public class SimParameters {
         vectors.addAll(stateBeforeStart);
     }
 
-    public synchronized void loadFromFile(File file) {
+    public synchronized void loadFromFile(File file) throws IOException, JSONException {
         try (FileInputStream is = new FileInputStream(file)) {
             JSONObject js = new JSONObject(new String(is.readAllBytes()));
             List<Vec2> newVectors = new ArrayList<>();
@@ -79,8 +75,8 @@ public class SimParameters {
             vectors.addAll(newVectors);
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
-
     }
 
     public synchronized void saveToFile(File file) {
@@ -95,7 +91,7 @@ public class SimParameters {
                 js.put("Star" + i, star);
             }
             is.write(js.toString().getBytes());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -105,9 +101,16 @@ public class SimParameters {
 
     public static SimParameters getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("Not instantiated");
+            throw new IllegalStateException("Singleton class not instantiated");
         }
         return instance;
+    }
+
+    /**
+     * ONLY FOR TESTING PURPOSES
+     */
+    static void resetInstance() {
+        instance = null;
     }
 
     public synchronized double getMass() {

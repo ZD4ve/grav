@@ -102,7 +102,15 @@ public class ButtonPanel extends JPanel {
 
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            simParams.loadFromFile(chooser.getSelectedFile());
+            try {
+                simParams.loadFromFile(chooser.getSelectedFile());
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(this,
+                        "Error importing from file\n" + exc.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 

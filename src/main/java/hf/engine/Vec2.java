@@ -41,7 +41,18 @@ public class Vec2 implements Serializable {
 
     @Override
     public String toString() {
-        return "Vec2{" + "x=" + x + ", y=" + y + '}';
+        return "(" + x + ", " + y + ')';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Vec2 vec2 = (Vec2) o;
+        double delta = 1e-9;
+        return Math.abs(vec2.x - x) < delta && Math.abs(vec2.y - y) < delta;
     }
 
 }
