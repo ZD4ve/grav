@@ -3,7 +3,7 @@ package hf.engine;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-class Vec2Test {
+class TestVec2 {
 
     @Test
     void testFromPolar() {

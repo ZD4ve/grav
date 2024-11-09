@@ -17,8 +17,8 @@ public class ButtonPanel extends JPanel {
     JButton save;
     JButton load;
 
-    transient Icon playIcon = new ImageIcon("resources/play.png");
-    transient Icon pauseIcon = new ImageIcon("resources/pause.png");
+    transient Icon playIcon = new ImageIcon("src/main/resources/play.png");
+    transient Icon pauseIcon = new ImageIcon("src/main/resources/pause.png");
 
     public ButtonPanel() {
         simParams = SimParameters.getInstance();
@@ -27,11 +27,11 @@ public class ButtonPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets.set(5, 5, 5, 5);
 
-        load = new JButton(new ImageIcon("resources/folder.png"));
-        save = new JButton(new ImageIcon("resources/save.png"));
+        load = new JButton(new ImageIcon("src/main/resources/folder.png"));
+        save = new JButton(new ImageIcon("src/main/resources/save.png"));
         play = new JButton(playIcon);
-        reset = new JButton(new ImageIcon("resources/undo.png"));
-        recenter = new JButton(new ImageIcon("resources/recenter.png"));
+        reset = new JButton(new ImageIcon("src/main/resources/undo.png"));
+        recenter = new JButton(new ImageIcon("src/main/resources/recenter.png"));
 
         load.addActionListener(this::loadFile);
         save.addActionListener(this::saveFile);

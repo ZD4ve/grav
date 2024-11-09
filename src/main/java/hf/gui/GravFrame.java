@@ -17,7 +17,7 @@ public class GravFrame extends JFrame {
         Observatory obs = new Observatory();
         add(obs, BorderLayout.CENTER);
 
-        ImageIcon icon = new ImageIcon("resources/icon.png");
+        ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
         setIconImage(icon.getImage());
 
         setVisible(true);
