@@ -9,12 +9,11 @@ class TestStar {
     Star a;
     Star b;
     Star c;
-    SimParameters simParams;
 
     @BeforeEach
     void initParams() {
         SimParameters.resetInstance();
-        simParams = new SimParameters();
+        new SimParameters();
         a = new Star(0);
         b = new Star(1);
         c = new Star(2);
@@ -33,5 +32,4 @@ class TestStar {
         // Assert
         assertEquals(new Vec2(-1, -1).normalise(), acceleration.normalise());
     }
-
 }
