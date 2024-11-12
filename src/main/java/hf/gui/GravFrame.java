@@ -19,6 +19,7 @@ public class GravFrame extends JFrame {
 
         ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
         setIconImage(icon.getImage());
+        System.setProperty("sun.java2d.opengl", "true");
 
         setVisible(true);
 
