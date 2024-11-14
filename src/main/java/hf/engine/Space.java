@@ -57,7 +57,7 @@ public class Space {
      * @param dt       Time step in seconds
      * @param divisons number of divisions
      */
-    public void tick(double dt, int divisons) {
+    private void tick(double dt, int divisons) {
         aStar.readParams();
         bStar.readParams();
         cStar.readParams();

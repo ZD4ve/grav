@@ -1,0 +1,81 @@
+@startuml grav
+
+package hf {
+    class Main {
+        + {static} main(args: String[])
+    }
+}
+
+package hf.engine {
+    class Vec2 {
+        + x: double
+        + y: double
+    }
+    class SimParameters {
+        + {static} getInstance() : SimParameters
+    }
+    class Space {
+        + simulate()
+    }
+    class Star {
+        + calculateAccelaration(a: Star, b: Star) : Vec2
+        + tick(acceleration: Vec2, dt: double)
+    }
+}
+
+package hf.gui {
+    class GravFrame
+    class ColorTheme
+    class ControlPanel
+    class ButtonPanel {
+        - play: JButton
+        - reset: JButton
+        - recenter: JButton
+        - save: JButton
+        - load: JButton
+    }
+    class VectorInputPanel {
+        - readData()
+        + readInput()
+        + lock()
+        + unlock()
+    }
+    class Dial {
+        + paintComponent()
+    }
+    class Observatory {
+        + paintComponent()
+    }
+    class Renderer {
+        + addComponent(JComponent)
+        - paintAll()
+    }
+
+    note top of Renderer
+        Refers to components with 
+        custom paint methods
+    end note
+}
+
+Main *-- GravFrame
+Main *-- Space
+Main *-- SimParameters
+
+Space o-- SimParameters
+Space *-- "3" Star
+SimParameters *-- "6" Vec2
+Star o-- Vec2 : "pos"
+Star o-- Vec2 : "vel"
+
+VectorInputPanel *-- Dial
+GravFrame *-- ControlPanel
+GravFrame *-- Observatory
+GravFrame *-- Renderer
+ControlPanel *-- ButtonPanel
+ControlPanel *-- "6" VectorInputPanel
+
+Observatory o-- SimParameters
+VectorInputPanel o-- SimParameters
+VectorInputPanel o.. Vec2
+
+@enduml

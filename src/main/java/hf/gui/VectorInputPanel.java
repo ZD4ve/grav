@@ -104,8 +104,6 @@ public class VectorInputPanel extends JPanel {
 
         @Override
         public void paintComponent(Graphics g) {
-            var parent = (VectorInputPanel) this.getParent();
-
             Graphics2D g2d = (Graphics2D) g;
             Dimension size = this.getSize();
             Dimension rect = new Dimension(Math.min(size.width, size.height), Math.min(size.width, size.height));
@@ -130,7 +128,7 @@ public class VectorInputPanel extends JPanel {
                     circle / 2 + margin,
                     rect.width - circle - 2 * margin,
                     rect.height - circle - 2 * margin);
-            Vec2 v = parent.simParams.getVector(vectorIndex).normalise().scale(rect.width / 2.0 - margin / 2.0);
+            Vec2 v = simParams.getVector(vectorIndex).normalise().scale(rect.width / 2.0 - margin / 2.0);
             g2d.setStroke(new BasicStroke(line));
             g2d.setColor(ColorTheme.Blue);
             g2d.drawLine(

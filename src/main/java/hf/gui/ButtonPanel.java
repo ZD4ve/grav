@@ -11,11 +11,11 @@ import hf.engine.*;
 
 public class ButtonPanel extends JPanel {
     transient SimParameters simParams;
-    JButton play;
-    JButton reset;
-    JButton recenter;
-    JButton save;
-    JButton load;
+    private JButton play;
+    private JButton reset;
+    private JButton recenter;
+    private JButton save;
+    private JButton load;
 
     transient Icon playIcon = new ImageIcon("src/main/resources/play.png");
     transient Icon pauseIcon = new ImageIcon("src/main/resources/pause.png");
