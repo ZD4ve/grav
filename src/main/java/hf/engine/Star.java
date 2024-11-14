@@ -1,5 +1,8 @@
 package hf.engine;
 
+/**
+ * Star in the simulation
+ */
 public class Star {
     SimParameters simParams;
     int index;

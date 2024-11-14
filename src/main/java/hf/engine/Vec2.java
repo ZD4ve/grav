@@ -3,7 +3,7 @@ package hf.engine;
 import java.io.Serializable;
 
 /**
- * IMMUTABLE 2D Vector class
+ * Immutable 2D Vector
  */
 public class Vec2 implements Serializable {
     public final double x;
@@ -17,7 +17,7 @@ public class Vec2 implements Serializable {
         this.x = x;
         this.y = y;
     }
-    
+
     public Vec2 add(Vec2 other) {
         return new Vec2(this.x + other.x, this.y + other.y);
     }

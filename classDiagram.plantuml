@@ -11,9 +11,18 @@ package hf.engine {
         + x: double
         + y: double
     }
-    class SimParameters {
+    class SimParameters << (S,#FF7700) Singleton >> {
+        - vectors: List<Vec2>
+        - simRunning: bool
+        __
         + {static} getInstance() : SimParameters
+        ..getters/setters..
     }
+    note bottom of SimParameters
+        Communication channel
+        between GUI and engine
+        (Controller)
+    end note
     class Space {
         + simulate()
     }
@@ -25,7 +34,7 @@ package hf.engine {
 
 package hf.gui {
     class GravFrame
-    class ColorTheme
+    class ColorTheme << (U,Orchid) Utility >>
     class ControlPanel
     class ButtonPanel {
         - play: JButton
@@ -50,23 +59,21 @@ package hf.gui {
         + addComponent(JComponent)
         - paintAll()
     }
-
     note top of Renderer
-        Refers to components with 
+        Redraws components with 
         custom paint methods
     end note
 }
 
+' Main
 Main *-- GravFrame
 Main *-- Space
-Main *-- SimParameters
 
-Space o-- SimParameters
+' Engine
 Space *-- "3" Star
 SimParameters *-- "6" Vec2
-Star o-- Vec2 : "pos"
-Star o-- Vec2 : "vel"
 
+' GUI
 VectorInputPanel *-- Dial
 GravFrame *-- ControlPanel
 GravFrame *-- Observatory
@@ -74,8 +81,14 @@ GravFrame *-- Renderer
 ControlPanel *-- ButtonPanel
 ControlPanel *-- "6" VectorInputPanel
 
-Observatory o-- SimParameters
-VectorInputPanel o-- SimParameters
+' params
+Observatory --> SimParameters
+VectorInputPanel --> SimParameters
+Star --> SimParameters
+Space --> SimParameters
+Star o.. Vec2 : "pos"
+Star o.. Vec2 : "vel"
 VectorInputPanel o.. Vec2
+
 
 @enduml

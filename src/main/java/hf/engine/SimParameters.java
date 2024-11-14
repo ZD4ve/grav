@@ -5,7 +5,7 @@ import java.util.*;
 import org.json.*;
 
 /**
- * Thread safe Singleton class to store the simulation parameters
+ * Thread safe Singleton, communicates with the simulation and the GUI
  */
 public class SimParameters {
     public static final String FILE_EXTENSION = "grav";
