@@ -15,7 +15,7 @@ public class SimParameters {
      */
     private static SimParameters instance;
 
-    final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
+    private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
     private double mass = 1e16;// kg 1.989e30s
     private List<Vec2> stateBeforeStart;
     private boolean simRunning = false;

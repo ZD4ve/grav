@@ -4,8 +4,8 @@ package hf.engine;
  * Star in the simulation
  */
 public class Star {
-    SimParameters simParams;
-    int index;
+    private SimParameters simParams;
+    private final int index;
     Vec2 position;
     Vec2 velocity;
 

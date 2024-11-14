@@ -6,6 +6,9 @@ import javax.swing.border.LineBorder;
 
 import hf.engine.*;
 
+/**
+ * Panel for user input of a radial vector
+ */
 public class VectorInputPanel extends JPanel {
     transient SimParameters simParams;
     final int vectorIndex;
@@ -68,6 +71,9 @@ public class VectorInputPanel extends JPanel {
         new Timer(100, e -> readData()).start();
     }
 
+    /**
+     * Update the simulation with the user input
+     */
     private void readInput() {
         if (simParams.isRunning())
             return;
@@ -76,23 +82,35 @@ public class VectorInputPanel extends JPanel {
         simParams.setVector(vectorIndex, Vec2.fromPolar(ang, amp));
     }
 
+    /**
+     * Update the input fields with the simulation data
+     */
     public void readData() {
         Vec2 v = simParams.getVector(vectorIndex);
         amplitude.setValue(v.amplitude());
         angle.setValue(v.angle());
     }
 
+    /**
+     * Disable input fields
+     */
     public void lock() {
         amplitude.setEnabled(false);
         angle.setEnabled(false);
     }
 
+    /**
+     * Enable input fields
+     */
     public void unlock() {
         amplitude.setEnabled(true);
         angle.setEnabled(true);
     }
 
-    public class Dial extends JComponent {
+    /**
+     * Dial for visual representation of the direction of a vector
+     */
+    private class Dial extends JComponent {
         public Dial(Dimension size) {
             setSize(size);
             setMinimumSize(size);
@@ -102,6 +120,9 @@ public class VectorInputPanel extends JPanel {
             setBackground(ColorTheme.Background);
         }
 
+        /**
+         * Paints the dial based on the parent class data
+         */
         @Override
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;

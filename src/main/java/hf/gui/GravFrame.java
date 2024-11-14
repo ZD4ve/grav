@@ -3,6 +3,9 @@ package hf.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main frame for the simulator
+ */
 public class GravFrame extends JFrame {
     public GravFrame() {
         setTitle("grav");

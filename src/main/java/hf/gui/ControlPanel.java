@@ -7,8 +7,12 @@ import javax.swing.*;
 
 public class ControlPanel extends JPanel {
 
-    ArrayList<VectorInputPanel> vectorInputs = new ArrayList<>();
+    private ArrayList<VectorInputPanel> vectorInputs = new ArrayList<>();
 
+    /**
+     * Panel used for user interaction
+     * Left side
+     */
     public ControlPanel() {
         setPreferredSize(new Dimension(400, 600));
         setLayout(new BorderLayout(20, 20));
@@ -45,5 +49,20 @@ public class ControlPanel extends JPanel {
             }
             inputPanel.add(vectorInputs.get(i), gbc);
         }
+
     }
+
+    public void lockVectorInputs() {
+        for (VectorInputPanel vip : vectorInputs) {
+            vip.lock();
+        }
+    }
+
+    public void unlockVectorInputs() {
+        for (VectorInputPanel vip : vectorInputs) {
+            vip.readData();
+            vip.unlock();
+        }
+    }
+
 }

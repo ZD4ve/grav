@@ -5,19 +5,26 @@ import javax.swing.JComponent;
 
 import hf.engine.*;
 
+/**
+ * Renderer of the current state of the simulation
+ * Right side
+ */
 public class Observatory extends JComponent {
+    private static final int MEMORY = 100;
+    private static final double STAR_RADIUS = 12;
 
-    static final int MEMORY = 100;
-
-    transient SimParameters simParams;
-    Vec2[][] history = new Vec2[3][MEMORY];
-    double historyIndex = 0;
+    private transient SimParameters simParams;
+    private Vec2[][] history = new Vec2[3][MEMORY];
+    private double historyIndex = 0;
 
     public Observatory() {
         simParams = SimParameters.getInstance();
         Renderer.addComponent(this);
     }
 
+    /**
+     * Paints the current state of the simulation
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -50,8 +57,8 @@ public class Observatory extends JComponent {
         for (int p = 0; p < 3; p++) {
             Vec2 pos = worldToScreen(simParams.getPos(p));
             g2d.fillOval(
-                    (int) (pos.x - starRadius()), (int) (pos.y - starRadius()),
-                    (int) starRadius() * 2, (int) starRadius() * 2);
+                    (int) (pos.x - STAR_RADIUS), (int) (pos.y - STAR_RADIUS),
+                    (int) STAR_RADIUS * 2, (int) STAR_RADIUS * 2);
             history[p][(int) historyIndex] = simParams.getPos(p);
         }
 
@@ -60,8 +67,8 @@ public class Observatory extends JComponent {
         for (int p = 0; p < 3; p++) {
             Vec2 pos = worldToScreen(simParams.getPos(p));
             g2d.drawLine(
-                    (int) (pos.x + Math.cos(Math.PI / 3) * starRadius()),
-                    (int) (pos.y - Math.sin(Math.PI / 3) * starRadius()),
+                    (int) (pos.x + Math.cos(Math.PI / 3) * STAR_RADIUS),
+                    (int) (pos.y - Math.sin(Math.PI / 3) * STAR_RADIUS),
                     (int) pos.x + 15, (int) pos.y - 30);
             g2d.drawLine((int) pos.x + 15, (int) pos.y - 30, (int) pos.x + 53, (int) pos.y - 30);
             g2d.drawString("Star " + "αβγ".charAt(p), (int) pos.x + 17, (int) pos.y - 32);
@@ -72,11 +79,7 @@ public class Observatory extends JComponent {
         }
     }
 
-    Vec2 worldToScreen(Vec2 pos) {
+    private Vec2 worldToScreen(Vec2 pos) {
         return new Vec2(pos.x + getWidth() / 2.0, pos.y + getHeight() / 2.0);
-    }
-
-    double starRadius() {
-        return 12;
     }
 }

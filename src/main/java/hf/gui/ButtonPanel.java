@@ -9,16 +9,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import hf.engine.*;
 
+/**
+ * Panel with buttons for controlling the simulation
+ * Bottom left corner
+ */
 public class ButtonPanel extends JPanel {
-    transient SimParameters simParams;
+    private transient SimParameters simParams;
     private JButton play;
     private JButton reset;
     private JButton recenter;
     private JButton save;
     private JButton load;
 
-    transient Icon playIcon = new ImageIcon("src/main/resources/play.png");
-    transient Icon pauseIcon = new ImageIcon("src/main/resources/pause.png");
+    private transient Icon playIcon = new ImageIcon("src/main/resources/play.png");
+    private transient Icon pauseIcon = new ImageIcon("src/main/resources/pause.png");
 
     public ButtonPanel() {
         simParams = SimParameters.getInstance();
@@ -55,42 +59,41 @@ public class ButtonPanel extends JPanel {
 
     }
 
+    /**
+     * Start/Stop simulation
+     */
     private void playPauseEvent(ActionEvent e) {
         var parent = (ControlPanel) getParent();
         if (simParams.isRunning()) {
             // STOP
             simParams.stopSim();
+            play.setIcon(playIcon);
             load.setEnabled(true);
             save.setEnabled(true);
             reset.setEnabled(false);
             recenter.setEnabled(true);
-
-            play.setIcon(playIcon);
-            parent.vectorInputs.forEach(v -> {
-                v.readData();
-                v.unlock();
-            });
+            parent.unlockVectorInputs();
         } else {
             // START
+            parent.lockVectorInputs();
             load.setEnabled(false);
             save.setEnabled(false);
             reset.setEnabled(true);
             recenter.setEnabled(false);
             play.setIcon(pauseIcon);
-            parent.vectorInputs.forEach(v -> v.lock());
             simParams.startSim();
         }
     }
 
+    /**
+     * Reset simulation
+     */
     private void resetEvent(ActionEvent e) {
         var parent = (ControlPanel) getParent();
         simParams.resetSim();
         reset.setEnabled(false);
         play.setIcon(playIcon);
-        parent.vectorInputs.forEach(v -> {
-            v.readData();
-            v.unlock();
-        });
+        parent.unlockVectorInputs();
     }
 
     /**

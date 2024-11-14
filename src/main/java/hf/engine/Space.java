@@ -5,11 +5,11 @@ package hf.engine;
  */
 public class Space {
     public static final double G = 6.67430e-11; // N⋅m^2⋅kg−2
-    SimParameters simParams;
+    private SimParameters simParams;
 
-    Star aStar;
-    Star bStar;
-    Star cStar;
+    private Star aStar;
+    private Star bStar;
+    private Star cStar;
 
     /**
      * Inizialize the space with 3 stars
