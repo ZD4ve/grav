@@ -1,5 +1,9 @@
 package hf.engine;
 
+//TODO
+/**
+ * Class that represents the space where the stars are located
+ */
 public class Space {
     public static final double G = 6.67430e-11; // N⋅m^2⋅kg−2
     SimParameters simParams;

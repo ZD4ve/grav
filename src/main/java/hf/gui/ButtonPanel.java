@@ -93,6 +93,9 @@ public class ButtonPanel extends JPanel {
         });
     }
 
+    /**
+     * Show open file dialog and load configuration from file
+     */
     private void loadFile(ActionEvent e) {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -114,6 +117,9 @@ public class ButtonPanel extends JPanel {
         }
     }
 
+    /**
+     * Show save file dialog and save configuration to file
+     */
     private void saveFile(ActionEvent e) {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
