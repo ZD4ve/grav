@@ -2,6 +2,9 @@ package hf.engine;
 
 import java.io.Serializable;
 
+/**
+ * IMMUTABLE 2D Vector class
+ */
 public class Vec2 implements Serializable {
     public final double x;
     public final double y;
@@ -14,7 +17,7 @@ public class Vec2 implements Serializable {
         this.x = x;
         this.y = y;
     }
-
+    
     public Vec2 add(Vec2 other) {
         return new Vec2(this.x + other.x, this.y + other.y);
     }
@@ -45,11 +48,11 @@ public class Vec2 implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {// NOSONAR
+        if (!(o instanceof Vec2))
+            return false;
         if (this == o)
             return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
         Vec2 vec2 = (Vec2) o;
         double delta = 1e-9;
         return Math.abs(vec2.x - x) < delta && Math.abs(vec2.y - y) < delta;

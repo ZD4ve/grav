@@ -4,9 +4,15 @@ import java.io.*;
 import java.util.*;
 import org.json.*;
 
+/**
+ * Thread safe Singleton class to store the simulation parameters
+ */
 public class SimParameters {
     public static final String FILE_EXTENSION = "grav";
 
+    /**
+     * Singleton instance
+     */
     private static SimParameters instance;
 
     final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
@@ -14,6 +20,10 @@ public class SimParameters {
     private List<Vec2> stateBeforeStart;
     private boolean simRunning = false;
 
+    /**
+     * Initialize the singleton instance.
+     * Should be called only once.
+     */
     public SimParameters() {
         if (instance != null) {
             throw new IllegalStateException("Singleton class already instantiated");
@@ -27,6 +37,10 @@ public class SimParameters {
         vectors.add(Vec2.fromPolar(330, 50));
     }
 
+    /**
+     * Recenter the stars to the center of mass
+     * Assumes the mass of all stars is the same
+     */
     public synchronized void recenter() {
         Vec2 sum = new Vec2(0, 0);
         for (int i = 0; i < vectors.size() / 2; i++) {
@@ -38,20 +52,30 @@ public class SimParameters {
         }
     }
 
+    /**
+     * Start the simulation
+     * Notify all waiting threads
+     */
     public synchronized void startSim() {
         simRunning = true;
-        notifyAll();
         stateBeforeStart = new ArrayList<>(vectors);
+        notifyAll();
     }
 
+    /**
+     * Stop the simulation
+     */
     public synchronized void stopSim() {
         simRunning = false;
     }
 
+    /**
+     * Reset the simulation to the state before start
+     */
     public synchronized void resetSim() {
         stopSim();
         try {
-            this.wait(1000);// NOSONAR
+            this.wait(250);// NOSONAR
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -60,6 +84,13 @@ public class SimParameters {
         vectors.addAll(stateBeforeStart);
     }
 
+    /**
+     * Load the simulation parameters from a file into the singleton instance
+     * 
+     * @param file File to load from
+     * @throws IOException   if file not found
+     * @throws JSONException if file is not a valid configuration
+     */
     public synchronized void loadFromFile(File file) throws IOException, JSONException {
         try (FileInputStream is = new FileInputStream(file)) {
             JSONObject js = new JSONObject(new String(is.readAllBytes()));
@@ -79,6 +110,11 @@ public class SimParameters {
         }
     }
 
+    /**
+     * Save the simulation parameters to a file
+     * 
+     * @param file File to save to
+     */
     public synchronized void saveToFile(File file) {
         try (FileOutputStream is = new FileOutputStream(file)) {
             JSONObject js = new JSONObject();
@@ -99,6 +135,12 @@ public class SimParameters {
     // Getters and setters
     // -------------------------------------------------------------------------------
 
+    /**
+     * Get the singleton instance
+     * 
+     * @return Singleton instance
+     * @throws IllegalStateException if the instance is not initialized
+     */
     public static SimParameters getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Singleton class not instantiated");

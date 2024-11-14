@@ -8,6 +8,9 @@ public class Space {
     Star bStar;
     Star cStar;
 
+    /**
+     * Inizialize the space with 3 stars
+     */
     public Space() {
         simParams = SimParameters.getInstance();
         aStar = new Star(0);
@@ -15,6 +18,9 @@ public class Space {
         cStar = new Star(2);
     }
 
+    /**
+     * Runable method for parallel simulation
+     */
     public void simulate() {
         while (true) {
             try {
@@ -45,6 +51,12 @@ public class Space {
         }
     }
 
+    /**
+     * Simulate the movement of the stars
+     * 
+     * @param dt       Time step in seconds
+     * @param divisons number of divisions
+     */
     public void tick(double dt, int divisons) {
         aStar.readParams();
         bStar.readParams();
