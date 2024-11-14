@@ -15,7 +15,7 @@ public class SimParameters {
      */
     private static SimParameters instance;
 
-    private final List<Vec2> vectors = Collections.synchronizedList(new ArrayList<>());
+    private final List<Vec2> data = Collections.synchronizedList(new ArrayList<>());
     private double mass = 1e16;// kg 1.989e30s
     private List<Vec2> stateBeforeStart;
     private boolean simRunning = false;
@@ -29,12 +29,12 @@ public class SimParameters {
             throw new IllegalStateException("Singleton class already instantiated");
         }
         instance = this; // NOSONAR
-        vectors.add(Vec2.fromPolar(0, 100));
-        vectors.add(Vec2.fromPolar(90, 50));
-        vectors.add(Vec2.fromPolar(120, 100));
-        vectors.add(Vec2.fromPolar(210, 50));
-        vectors.add(Vec2.fromPolar(240, 100));
-        vectors.add(Vec2.fromPolar(330, 50));
+        data.add(Vec2.fromPolar(0, 100));
+        data.add(Vec2.fromPolar(90, 50));
+        data.add(Vec2.fromPolar(120, 100));
+        data.add(Vec2.fromPolar(210, 50));
+        data.add(Vec2.fromPolar(240, 100));
+        data.add(Vec2.fromPolar(330, 50));
     }
 
     /**
@@ -43,11 +43,11 @@ public class SimParameters {
      */
     public synchronized void recenter() {
         Vec2 sum = new Vec2(0, 0);
-        for (int i = 0; i < vectors.size() / 2; i++) {
+        for (int i = 0; i < data.size() / 2; i++) {
             sum = sum.add(getPos(i));
         }
-        Vec2 offset = sum.scale(-2.0 / vectors.size());
-        for (int i = 0; i < vectors.size() / 2; i++) {
+        Vec2 offset = sum.scale(-2.0 / data.size());
+        for (int i = 0; i < data.size() / 2; i++) {
             setPos(i, getPos(i).add(offset));
         }
     }
@@ -58,7 +58,7 @@ public class SimParameters {
      */
     public synchronized void startSim() {
         simRunning = true;
-        stateBeforeStart = new ArrayList<>(vectors);
+        stateBeforeStart = new ArrayList<>(data);
         notifyAll();
     }
 
@@ -80,8 +80,8 @@ public class SimParameters {
             e.printStackTrace();
             Thread.currentThread().interrupt();
         }
-        vectors.clear();
-        vectors.addAll(stateBeforeStart);
+        data.clear();
+        data.addAll(stateBeforeStart);
     }
 
     /**
@@ -102,8 +102,8 @@ public class SimParameters {
                 newVectors.add(new Vec2(pos.getDouble(0), pos.getDouble(1)));
                 newVectors.add(new Vec2(vel.getDouble(0), vel.getDouble(1)));
             }
-            vectors.clear();
-            vectors.addAll(newVectors);
+            data.clear();
+            data.addAll(newVectors);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -164,26 +164,26 @@ public class SimParameters {
     }
 
     public synchronized Vec2 getVector(int index) {
-        return vectors.get(index);
+        return data.get(index);
     }
 
     public synchronized void setVector(int index, Vec2 v) {
-        vectors.set(index, v);
+        data.set(index, v);
     }
 
     public synchronized Vec2 getVel(int index) {
-        return vectors.get(index * 2 + 1);
+        return data.get(index * 2 + 1);
     }
 
     public synchronized void setVel(int index, Vec2 v) {
-        vectors.set(index * 2 + 1, v);
+        data.set(index * 2 + 1, v);
     }
 
     public synchronized Vec2 getPos(int index) {
-        return vectors.get(index * 2);
+        return data.get(index * 2);
     }
 
     public synchronized void setPos(int index, Vec2 v) {
-        vectors.set(index * 2, v);
+        data.set(index * 2, v);
     }
 }
