@@ -12,7 +12,6 @@ package hf.engine {
         + y: double
     }
     class SimParameters << (S,#FF7700) Singleton >> {
-        - data: List<Vec2>
         - simRunning: bool
         __
         + {static} getInstance() : SimParameters
