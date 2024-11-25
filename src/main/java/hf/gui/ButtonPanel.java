@@ -91,8 +91,11 @@ public class ButtonPanel extends JPanel {
     private void resetEvent(ActionEvent e) {
         var parent = (ControlPanel) getParent();
         simParams.resetSim();
-        reset.setEnabled(false);
         play.setIcon(playIcon);
+        load.setEnabled(true);
+        save.setEnabled(true);
+        reset.setEnabled(false);
+        recenter.setEnabled(true);
         parent.unlockVectorInputs();
     }
 
