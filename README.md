@@ -32,9 +32,3 @@
 ## Interface
 
 The **left panel** contains controls for the position and velocity of the three bodies, along with simulation actions. The **right panel** displays their current positions and the trails left by their movement.
-
-## About
-
-- **Author:** Zoller Dávid
-- **Original user manual:** *Felhasználói kézikönyv* (2024)
-
